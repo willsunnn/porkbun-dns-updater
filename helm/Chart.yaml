@@ -1,0 +1,8 @@
+apiVersion: v2
+name: porkbun-dns-updater
+description: A Kubernetes CronJob that updates porkbun DNS with the current machine's public IP
+type: application
+
+# These versions will be automatically updated by GitHub Action on release.
+version: 0.0.1
+appVersion: 0.0.1

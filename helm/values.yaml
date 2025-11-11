@@ -1,0 +1,34 @@
+# -- Override the full name of the chart.
+fullnameOverride: ""
+
+image:
+  repository: ghcr.io/willsunnn/porkbun-dns-updater
+  pullPolicy: IfNotPresent
+  tag: latest
+
+# -- The cron schedule for the job.
+# (e.g., "*/5 * * * *" runs every 5 minutes)
+schedule: "*/5 * * * *"
+
+env:
+  TTL: ""         # Optional
+  SUBDOMAIN: ""   # Optional
+  DOMAIN: ""      # Required
+
+# Porkbun API Credentials
+existingSecret:
+  name: ""        # Name of the existing secret to pull API Credentials from
+  apiKeyKey: "API_KEY"
+  secretKeyKey: "SECRET_KEY"
+
+# Node selection constraints
+nodeSelector: {}
+
+# Pod resource requests and limits
+resources: {}
+
+# Service account configuration
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""        # Optional

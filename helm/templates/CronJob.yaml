@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "my-app.fullname" . }}
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "my-app.selectorLabels" . | nindent 12 }}
+        spec:
+          {{- with .Values.serviceAccount }}
+          serviceAccountName: {{ include "my-app.serviceAccountName" . }}
+          {{- end }}
+          restartPolicy: OnFailure
+          containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              env:
+                # Optional environment variables
+                {{- if .Values.env.TTL }}
+                - name: TTL
+                  value: {{ .Values.env.TTL | quote }}
+                {{- end }}
+                {{- if .Values.env.SUBDOMAIN }}
+                - name: SUBDOMAIN
+                  value: {{ .Values.env.SUBDOMAIN | quote }}
+                # Required environment variables
+                {{- end }}
+                - name: DOMAIN
+                  value: {{ .Values.env.DOMAIN | quote }}
+
+                # Required environment variables from secret
+                {{- $secretName := .Values.existingSecret.name | required "You must provide the name of an existing secret at .Values.existingSecret.name" }}
+                - name: API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ $secretName }}
+                      key: {{ .Values.existingSecret.apiKeyKey }}
+                - name: SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ $secretName }}
+                      key: {{ .Values.existingSecret.secretKeyKey }}
+              {{- with .Values.resources }}
+              resources:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
