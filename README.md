@@ -4,21 +4,30 @@ This project is a script to update Porkbun DNS to the IP of the current machine
 
 This is used to provide some sort of dynamic DNS functionality when an internet provider does not provide a static IP
 
-The script can be run via python directly, as a docker container, or as a helm chart
+The script can be run via golang directly, as a docker container, or as a helm chart
 
 # Running the script
 
-### via Python
+### via Go
 
-The script can be run via python. It requires the environment variables `API_KEY`, `SECRET_KEY`, and `DOMAIN`.
+The script can be run via go. It requires the environment variables `API_KEY`, `SECRET_KEY`, and `DOMAIN`.
 Optional parameters are `TTL` and `SUBDOMAINS`. `SUBDOMAINS` is a comma-separated list of subdomains to update (e.g., "www,api,"). An empty string in the list will update the root domain. If `SUBDOMAINS` is not set, it will default to updating the root domain.
 
-### via Docker
-
-Docker build:
+Build:
 ```shell
-docker build . -t porkbun-ddns
+go build .
 ```
+
+Run:
+```shell
+API_KEY="<PORKBUN API KEY>" \
+SECRET_KEY="<PORKBUN SECRET KEY>" \
+DOMAIN="<YOUR DOMAIN>" \
+SUBDOMAINS="www,api," \
+./porkbun-dns-updater
+```
+
+### via Docker
 
 Docker run:
 ```shell

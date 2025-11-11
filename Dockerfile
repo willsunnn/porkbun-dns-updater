@@ -1,17 +1,18 @@
-FROM python:3.14-alpine
+FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.25 as builder
 
-RUN addgroup -S ddns && adduser -S ddns -G ddns
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
 
-WORKDIR /app
+WORKDIR /app/
+COPY go.mod ./
+RUN go mod download
+COPY **/*.go ./
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o dns-updater
+RUN chmod +x dns-updater
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY porkbun_ddns.py .
-RUN chmod +x porkbun_ddns.py
-
-RUN mkdir /cache && chown ddns:ddns /cache
-
-USER ddns
-
-CMD ["python", "/app/porkbun_ddns.py"]
+FROM --platform=${TARGETPLATFORM:-linux/amd64} scratch
+WORKDIR /app/
+COPY --from=builder /app/dns-updater /app/dns-updater
+ENTRYPOINT ["/app/dns-updater"]
