@@ -26,7 +26,7 @@ docker run --rm -it \
   -e SECRET_KEY="<PORKBUN SECRET KEY>" \
   -e DOMAIN="<YOUR DOMAIN>" \
   -e SUBDOMAIN="<YOUR SUBDOMAIN>" \
-  porkbun-ddns
+  ghcr.io/willsunnn/porkbun-dns-updater:1.0.0
 ```
 Again, API_KEY, SECRET_KEY, and DOMAIN are required, with TTL and SUBDOMAIN being optional parameters.
 
@@ -34,7 +34,7 @@ Again, API_KEY, SECRET_KEY, and DOMAIN are required, with TTL and SUBDOMAIN bein
 
 Helm repository: oci://ghcr.io/willsunnn
 
-Chart name: porkbun-dns-updater
+Chart name: porkbun-dns-updater-helm
 
 Create secret:
 ```shell
