@@ -4,7 +4,7 @@ fullnameOverride: ""
 image:
   repository: ghcr.io/willsunnn/porkbun-dns-updater
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: null
 
 # -- The cron schedule for the job.
 # (e.g., "*/5 * * * *" runs every 5 minutes)
