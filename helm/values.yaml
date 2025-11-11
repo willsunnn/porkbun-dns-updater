@@ -9,7 +9,6 @@ image:
 cronjob:
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 0
-  command: ["python", "/app/porkbun_ddns.py"]
 
 # -- The cron schedule for the job.
 # (e.g., "*/5 * * * *" runs every 5 minutes)
