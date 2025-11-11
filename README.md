@@ -27,7 +27,7 @@ docker run --rm -it \
   -e SECRET_KEY="<PORKBUN SECRET KEY>" \
   -e DOMAIN="<YOUR DOMAIN>" \
   -e SUBDOMAINS="www,api," \
-  ghcr.io/willsunnn/porkbun-dns-updater:1.0.1
+  ghcr.io/willsunnn/porkbun-dns-updater:2.0.0
 ```
 `API_KEY`, `SECRET_KEY`, and `DOMAIN` are required. `TTL` and `SUBDOMAINS` are optional. `SUBDOMAINS` is a comma-separated list of subdomains to update. An empty value (e.g. `sub1,` or `,sub2` or `sub1,,sub2`) will update the root domain.
 
@@ -65,8 +65,8 @@ existingSecret:
 
 Set and push version tag
 ```shell
-git tag 1.0.1
-git push origin 1.0.1
+git tag 2.0.0
+git push origin 2.0.0
 ```
 [Build can be accessed here](https://github.com/willsunnn/porkbun-dns-updater/actions)
 [Releases can be accessed here](https://github.com/willsunnn/porkbun-dns-updater/tags)
