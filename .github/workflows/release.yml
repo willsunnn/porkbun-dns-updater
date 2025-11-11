@@ -57,7 +57,7 @@ jobs:
           echo "--- Updated Chart.yaml ---"
           cat helm/Chart.yaml
           helm package helm
-          helm push porkbun-dns-updater-*.tgz oci://ghcr.io/${{ github.repository_owner }}
+          helm push porkbun-dns-updater-helm-*.tgz oci://ghcr.io/${{ github.repository_owner }}
       - name: Create GitHub Release and Upload Helm Chart
         uses: softprops/action-gh-release@v2
         with:

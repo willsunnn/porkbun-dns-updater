@@ -1,5 +1,5 @@
 apiVersion: v2
-name: porkbun-dns-updater
+name: porkbun-dns-updater-helm
 description: A Kubernetes CronJob that updates porkbun DNS with the current machine's public IP
 type: application
 
