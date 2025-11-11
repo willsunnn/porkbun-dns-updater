@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "my-app.fullname" . }}
+  name: {{ include "porkbun-dns-updater.fullname" . }}
   labels:
-    {{- include "my-app.labels" . | nindent 4 }}
+    {{- include "porkbun-dns-updater.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.schedule | quote }}
   jobTemplate:
@@ -11,10 +11,9 @@ spec:
       template:
         metadata:
           labels:
-            {{- include "my-app.selectorLabels" . | nindent 12 }}
+            {{- include "porkbun-dns-updater.selectorLabels" . | nindent 12 }}
         spec:
-          {{- with .Values.serviceAccount }}
-          serviceAccountName: {{ include "my-app.serviceAccountName" . }}
+          serviceAccountName: {{ include "porkbun-dns-updater.serviceAccountName" . }}
           {{- end }}
           restartPolicy: OnFailure
           containers:
