@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"porkbun-dns-updater/porkbun"
+	"wsun.dev/porkbun-dns-updater/porkbun"
 )
 
 func main() {

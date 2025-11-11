@@ -1,18 +1,12 @@
-FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.25 as builder
-
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
-ARG TARGETOS
-ARG TARGETARCH
+FROM golang:1.25.4 as builder
 
 WORKDIR /app/
 COPY go.mod ./
 RUN go mod download
-COPY **/*.go ./
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o dns-updater
-RUN chmod +x dns-updater
+COPY . .
+RUN go build -o porkbun-dns-updater .
+RUN chmod +rwx porkbun-dns-updater
 
-FROM --platform=${TARGETPLATFORM:-linux/amd64} scratch
-WORKDIR /app/
-COPY --from=builder /app/dns-updater /app/dns-updater
-ENTRYPOINT ["/app/dns-updater"]
+FROM golang:1.25.4
+COPY --from=builder /app/porkbun-dns-updater .
+ENTRYPOINT ["./porkbun-dns-updater"]
