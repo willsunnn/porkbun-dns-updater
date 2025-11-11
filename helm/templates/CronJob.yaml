@@ -23,17 +23,17 @@ spec:
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               env:
                 # Optional environment variables
-                {{- if .Values.env.TTL }}
+                {{- if .Values.env.ttl }}
                 - name: TTL
-                  value: {{ .Values.env.TTL | quote }}
+                  value: {{ .Values.env.ttl | quote }}
                 {{- end }}
-                {{- if .Values.env.SUBDOMAIN }}
-                - name: SUBDOMAIN
-                  value: {{ .Values.env.SUBDOMAIN | quote }}
+                {{- if .Values.env.subdomains }}
+                - name: SUBDOMAINS
+                  value: {{ .Values.env.subdomains | join "," | quote }}
+                {{- end }}
                 # Required environment variables
-                {{- end }}
                 - name: DOMAIN
-                  value: {{ .Values.env.DOMAIN | quote }}
+                  value: {{ .Values.env.domain | quote }}
 
                 # Required environment variables from secret
                 {{- $secretName := .Values.existingSecret.name | required "You must provide the name of an existing secret at .Values.existingSecret.name" }}

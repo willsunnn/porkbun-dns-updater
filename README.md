@@ -10,7 +10,8 @@ The script can be run via python directly, as a docker container, or as a helm c
 
 ### via Python
 
-The script can be run via python. It requires the environment variables API_KEY, SECRET_KEY, and DOMAIN, with TTL and SUBDOMAIN being optional parameters.
+The script can be run via python. It requires the environment variables `API_KEY`, `SECRET_KEY`, and `DOMAIN`.
+Optional parameters are `TTL` and `SUBDOMAINS`. `SUBDOMAINS` is a comma-separated list of subdomains to update (e.g., "www,api,"). An empty string in the list will update the root domain. If `SUBDOMAINS` is not set, it will default to updating the root domain.
 
 ### via Docker
 
@@ -25,10 +26,10 @@ docker run --rm -it \
   -e API_KEY="<PORKBUN API KEY>" \
   -e SECRET_KEY="<PORKBUN SECRET KEY>" \
   -e DOMAIN="<YOUR DOMAIN>" \
-  -e SUBDOMAIN="<YOUR SUBDOMAIN>" \
+  -e SUBDOMAINS="www,api," \
   ghcr.io/willsunnn/porkbun-dns-updater:1.0.1
 ```
-Again, API_KEY, SECRET_KEY, and DOMAIN are required, with TTL and SUBDOMAIN being optional parameters.
+`API_KEY`, `SECRET_KEY`, and `DOMAIN` are required. `TTL` and `SUBDOMAINS` are optional. `SUBDOMAINS` is a comma-separated list of subdomains to update. An empty value (e.g. `sub1,` or `,sub2` or `sub1,,sub2`) will update the root domain.
 
 ### via Helm
 
@@ -49,7 +50,10 @@ fullnameOverride: porkbun-ddns
 schedule: "*/1 * * * *"
 env:
   DOMAIN: <domain to update>        # Required
-  SUBDOMAIN: "*"
+  subdomains:
+    - "www"
+    - "" # Updates the root domain
+    - "api"
 existingSecret:
   name: porkbun-api-creds           # Required
   apiKeyKey: api_key

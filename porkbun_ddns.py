@@ -90,20 +90,26 @@ def main():
     api_key = os.environ.get("API_KEY")
     secret_key = os.environ.get("SECRET_KEY")
     domain = os.environ.get("DOMAIN")
-    subdomain = os.environ.get("SUBDOMAIN", None)   # Optional
-    ttl = int(os.environ.get("TTL", "600"))         # Optional
+    subdomains_str = os.environ.get("SUBDOMAINS", "")   # Optional, comma separated
+    ttl = int(os.environ.get("TTL", "600"))             # Optional
 
     if not all([api_key, secret_key, domain]):
         logging.error("API_KEY, SECRET_KEY, and DOMAIN are required")
         sys.exit(1)
     
-    full_domain = f"{subdomain}.{domain}" if subdomain else domain
-    logging.info(f"Updating porkbun for {full_domain}")
+    subdomains = [s.strip() for s in subdomains_str.split(',')]
+    # An empty string in the list corresponds to the root domain
+    subdomains_to_update = [s if s else None for s in subdomains]
+    if not subdomains_to_update:
+        subdomains_to_update = [None]
 
     try:
         ip = get_ip(api_key, secret_key)
-        upsert_dns_record(api_key, secret_key, ip, domain, subdomain, ttl)
-        logging.info(f"DNS update/check complete. ip={ip}")
+        for subdomain in subdomains_to_update:
+            full_domain = f"{subdomain}.{domain}" if subdomain else domain
+            logging.info(f"Updating porkbun for {full_domain}")
+            upsert_dns_record(api_key, secret_key, ip, domain, subdomain, ttl)
+        logging.info(f"DNS update/check complete for all subdomains. ip={ip}")
     except Exception as e:
         logging.exception(f"An unexpected error occurred: {e}")
         sys.exit(1)

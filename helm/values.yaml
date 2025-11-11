@@ -15,9 +15,12 @@ cronjob:
 schedule: "*/5 * * * *"
 
 env:
-  TTL: ""         # Optional
-  SUBDOMAIN: ""   # Optional
-  DOMAIN: ""      # Required
+  ttl: ""         # Optional
+  domain: ""      # Required
+  # Optional comma-separated list of subdomains to update.
+  # An empty string in the list will update the root domain.
+  # defaults to updating the root domain
+  subdomains: []
 
 # Porkbun API Credentials
 existingSecret:
