@@ -6,6 +6,8 @@ metadata:
     {{- include "porkbun-dns-updater.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.schedule | quote }}
+  successfulJobsHistoryLimit: {{ .Values.cronjob.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.cronjob.failedJobsHistoryLimit }}
   jobTemplate:
     spec:
       template:
@@ -19,6 +21,7 @@ spec:
             - name: {{ .Chart.Name }}
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command: {{ .Values.cronjob.command }}
               env:
                 # Optional environment variables
                 {{- if .Values.env.TTL }}
