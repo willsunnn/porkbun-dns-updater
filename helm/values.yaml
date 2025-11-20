@@ -9,6 +9,7 @@ image:
 cronjob:
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 0
+  activeDeadlineSeconds: 60
 
 # -- The cron schedule for the job.
 # (e.g., "*/5 * * * *" runs every 5 minutes)

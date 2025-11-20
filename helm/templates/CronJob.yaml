@@ -10,6 +10,7 @@ spec:
   failedJobsHistoryLimit: {{ .Values.cronjob.failedJobsHistoryLimit }}
   jobTemplate:
     spec:
+      activeDeadlineSeconds: {{ .Values.cronjob.activeDeadlineSeconds }}
       template:
         metadata:
           labels:
